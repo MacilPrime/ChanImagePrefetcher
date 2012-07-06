@@ -1,3 +1,7 @@
+(2012/06/26) - v1.2
+- Don't prefetch hidden/blocked images.
+- Includes jQuery source, loads much faster now.
+
 (2012/06/25) - v1.1
 - Added toggle button at the top of the page.
 

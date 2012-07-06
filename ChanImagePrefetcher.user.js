@@ -6,7 +6,7 @@
 // @include      http*://boards.4chan.org/*/*
 // @updateURL    https://raw.github.com/Macil/ChanImagePrefetcher/master/ChanImagePrefetcher.user.js
 // @homepage     http://macil.github.com/ChanImagePrefetcher/
-// @version      1.1
+// @version      1.2
 // @icon         http://i.imgur.com/aUTYg.png
 // ==/UserScript==
 
