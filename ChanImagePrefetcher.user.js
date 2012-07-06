@@ -80,9 +80,9 @@ function cipmain() {
 
     function enable() {
 	prefetchImages(document);
-        $(document.body)
+        $(".thread")
 	    .off("DOMNodeInserted.cip")
-	    .on("DOMNodeInserted.cip", ".thread", function(event) {
+	    .on("DOMNodeInserted.cip", function(event) {
 		var tag = $(event.target);
 		if(tag.hasClass("postContainer")) {
                     prefetchImages(tag);
