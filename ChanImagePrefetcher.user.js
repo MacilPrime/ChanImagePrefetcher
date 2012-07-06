@@ -21,7 +21,7 @@ function addJQuery(callback) {
     document.body.appendChild(script);
 }
 
-function dcmain() {
+function cipmain() {
     var cipEnabled;
 
     function prefetchPostImage(posttag) {
@@ -91,4 +91,4 @@ function dcmain() {
         enable();
 }
 
-addJQuery(dcmain);
+addJQuery(cipmain);
