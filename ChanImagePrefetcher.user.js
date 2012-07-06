@@ -28,12 +28,16 @@ function cipmain() {
         var imageurl = image.attr("href");
 
         setTimeout(function() {
-            var currentVisibility = $(".fileThumb")
-                .filter(function() {
-                    return $(this).attr("href") == imageurl;
-                })
-                .filter(":visible")
-                .length > 0;
+            var currentVisibility = image.is(":visible");
+
+	    if(!currentVisibility) {
+		currentVisibility = $(".fileThumb")
+                    .filter(function() {
+			return $(this).attr("href") == imageurl;
+                    })
+                    .filter(":visible")
+                    .length > 0;
+	    }
 
             if(currentVisibility) {
                 if(!url_to_imgtags[imageurl]) {
@@ -76,12 +80,14 @@ function cipmain() {
 
     function enable() {
 	prefetchImages(document);
-        $(document.body).on("DOMNodeInserted.cip", ".thread", function(event) {
-            var tag = $(event.target);
-            if(tag.hasClass("postContainer")) {
-                prefetchImages(tag);
-            }
-        });
+        $(document.body)
+	    .off("DOMNodeInserted.cip")
+	    .on("DOMNodeInserted.cip", ".thread", function(event) {
+		var tag = $(event.target);
+		if(tag.hasClass("postContainer")) {
+                    prefetchImages(tag);
+		}
+            });
     }
 
     function disable() {
@@ -111,8 +117,10 @@ function cipmain() {
     loadSettings();
     setupPage();
 
-    if(cipEnabled)
-        enable();
+    $(document).ready(function() {
+	if(cipEnabled)
+            enable();
+    });
 }
 
 cipmain();
