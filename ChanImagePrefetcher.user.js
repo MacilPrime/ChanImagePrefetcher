@@ -18,16 +18,46 @@
 function cipmain() {
     var cipEnabled;
 
+    var url_to_imgtags = {};
+
     function prefetchPostImage(posttag) {
         var image = $(posttag).children(".file").find(".fileThumb");
         if(image.length==0)
             return;
 
         var imageurl = image.attr("href");
-	$("<img/>")
-	    .attr("src",imageurl)
-	    .addClass("cipPrefetched")
-	    .appendTo(document.head);
+
+        setTimeout(function() {
+            var currentVisibility = $(".fileThumb")
+                .filter(function() {
+                    return $(this).attr("href") == imageurl;
+                })
+                .filter(":visible")
+                .length > 0;
+
+            if(currentVisibility) {
+                if(!url_to_imgtags[imageurl]) {
+	            url_to_imgtags[imageurl] = $("<img/>")
+	                .attr("src",imageurl)
+	                .addClass("cipPrefetched")
+	                .appendTo(document.head);
+                }
+            } else {
+                if(url_to_imgtags[imageurl]) {
+                    url_to_imgtags[imageurl].remove();
+                    delete url_to_imgtags[imageurl];
+                }
+            }
+
+            $(posttag).parent()
+                .off("DOMAttrModified.cip")
+                .on("DOMAttrModified.cip", function(event) {
+                    if(image.is(":visible") != currentVisibility) {
+                        $(this).off("DOMAttrModified.cip");
+                        prefetchPostImage(posttag);
+                    }
+                });
+        }, 500);
     }
 
     function prefetchImages(context) {
