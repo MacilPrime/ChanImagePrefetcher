@@ -22,6 +22,8 @@ function addJQuery(callback) {
 }
 
 function dcmain() {
+    var cipEnabled;
+
     function prefetchPostImage(posttag) {
         var image = $(posttag).children(".file").find(".fileThumb");
         if(image.length==0)
@@ -30,6 +32,7 @@ function dcmain() {
         var imageurl = image.attr("href");
 	$("<img/>")
 	    .attr("src",imageurl)
+	    .addClass("cipPrefetched")
 	    .appendTo(document.head);
     }
 
@@ -39,8 +42,17 @@ function dcmain() {
         });
     }
 
-    function setupListener() {
-        $(document).on("DOMNodeInserted", ".thread", function(event) {
+    function loadSettings() {
+	cipEnabled = localStorage["cipEnabled"] == "f" ? false : true;
+    }
+
+    function saveSettings() {
+	localStorage["cipEnabled"] = cipEnabled ? "t" : "f";
+    }
+
+    function enable() {
+	prefetchImages(document);
+        $(document.body).on("DOMNodeInserted.cip", ".thread", function(event) {
             var tag = $(event.target);
             if(tag.hasClass("postContainer")) {
                 prefetchImages(tag);
@@ -48,8 +60,35 @@ function dcmain() {
         });
     }
 
-    setupListener();
-    prefetchImages(document);
+    function disable() {
+        $(document.body).off("DOMNodeInserted.cip");
+        $(".cipPrefetched", document.head).remove();
+    }
+
+    function setupPage() {
+        var options = $("<div/>").text("Enable image prefetching");
+
+        var enableToggle = $("<input/>")
+            .attr("type", "checkbox")
+            .attr("checked", cipEnabled)
+            .change(function() {
+                cipEnabled = Boolean($(this).attr("checked"));
+                saveSettings();
+                if(cipEnabled)
+                    enable();
+                else
+                    disable();
+            })
+            .prependTo(options);
+
+        $("#delform").prepend(options, $("<br/>"));
+    }
+
+    loadSettings();
+    setupPage();
+
+    if(cipEnabled)
+        enable();
 }
 
 addJQuery(dcmain);
