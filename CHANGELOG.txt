@@ -1,2 +1,5 @@
-(2012/06/01) - v1.0
+(2012/06/25) - v1.1
+- Added toggle button at the top of the page.
+
+(2012/06/25) - v1.0
 - Initial version. Works.
