@@ -1,3 +1,6 @@
+(2012/09/07) - v1.4
+- CSS tweak. No longer shows prefeteched images erroneously in saved pages.
+
 (2012/06/26) - v1.3
 - Efficiency improvements.
 
