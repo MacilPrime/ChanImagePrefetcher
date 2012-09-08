@@ -20,6 +20,13 @@ function cipmain() {
 
     var url_to_imgtags = {};
 
+    function prepareCSS() {
+        var $cipCSS = $("<style/>");
+        $cipCSS.attr("type", "text/css");
+        $cipCSS.html(".cipPrefetched { display: none; }");
+        $cipCSS.appendTo(document.head);
+    }
+
     function prefetchPostImage(posttag) {
         var image = $(posttag).children(".file").find(".fileThumb");
         if(image.length==0)
@@ -114,6 +121,7 @@ function cipmain() {
         $("#delform").prepend(options, $("<br/>"));
     }
 
+    prepareCSS();
     loadSettings();
     setupPage();
 
